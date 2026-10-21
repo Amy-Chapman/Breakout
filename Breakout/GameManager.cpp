@@ -25,7 +25,7 @@ void GameManager::initialize()
     _ui = new UI(_window, _lives, this);
 
     // Create bricks
-    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(1, 1, 80.0f, 30.0f, 5.0f);
 }
 
 void GameManager::update(float dt)
@@ -42,13 +42,15 @@ void GameManager::update(float dt)
     }
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.");
+        _masterText.setString("Level completed.\n Click to continue!");
+        /*
         float _time_since_level_complete = _time; 
-        while (_time < _time_since_level_complete + 5)
+        float _breakTim = _time_since_level_complete + 5000;
+        while (_time < _breakTim)
         {
             _time += dt;
-        }
-        initialize(); 
+        }*/
+        //std::cout << _time; 
         return;
     }
     // pause and pause handling
@@ -101,6 +103,12 @@ void GameManager::loseLife()
     // TODO screen shake.
 }
 
+void GameManager::newLevel(float dt)
+{
+    _levelComplete = false; 
+     initialize(); 
+}
+
 void GameManager::render()
 {
     _paddle->render();
@@ -114,8 +122,6 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
-
-    
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }
