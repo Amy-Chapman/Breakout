@@ -4,7 +4,7 @@
 Paddle::Paddle(sf::RenderWindow* window)
     : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
 {
-    _sprite.setFillColor(sf::Color::Cyan);
+    _sprite.setFillColor(sf::Color::Color(254,253,210));
     _sprite.setPosition((window->getSize().x - _width) / 2.0f, window->getSize().y - 50.0f);
     _sprite.setSize(sf::Vector2f(_width, PADDLE_HEIGHT));
 }
@@ -21,6 +21,10 @@ void Paddle::moveLeft(float dt)
     {
         _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && position > 0)
+    {
+        _sprite.move(sf::Vector2f(-dt * PADDLE_SPEED, 0));
+    }
 }
 
 void Paddle::moveRight(float dt)
@@ -29,6 +33,11 @@ void Paddle::moveRight(float dt)
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && position < _window->getSize().x - _width)
     {
+        _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && position < _window->getSize().x - _width)
+    {
+        std::cout << "right"; 
         _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
     }
 }

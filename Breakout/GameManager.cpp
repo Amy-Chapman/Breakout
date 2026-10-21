@@ -43,6 +43,12 @@ void GameManager::update(float dt)
     if (_levelComplete)
     {
         _masterText.setString("Level completed.");
+        float _time_since_level_complete = _time; 
+        while (_time < _time_since_level_complete + 5)
+        {
+            _time += dt;
+        }
+        initialize(); 
         return;
     }
     // pause and pause handling
@@ -108,6 +114,8 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+
+    
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }

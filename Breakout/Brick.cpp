@@ -5,7 +5,7 @@ Brick::Brick(float x, float y, float width, float height)
 {
     _shape.setPosition(x, y);
     _shape.setSize(sf::Vector2f(width, height));
-    _shape.setFillColor(sf::Color::Red);
+    _shape.setFillColor(sf::Color::Color(250,16,126));
 }
 
 void Brick::render(sf::RenderWindow& window)

@@ -6,7 +6,7 @@ Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
     _timeWithPowerupEffect(0.f), _isFireBall(false), _isAlive(true), _direction({1,1})
 {
     _sprite.setRadius(RADIUS);
-    _sprite.setFillColor(sf::Color::Cyan);
+    _sprite.setFillColor(sf::Color::Color(254, 253, 210));
     _sprite.setPosition(0, 300);
 }
 
@@ -28,7 +28,7 @@ void Ball::update(float dt)
         else
         {
             setFireBall(0);    // disable fireball
-            _sprite.setFillColor(sf::Color::Cyan);  // back to normal colour.
+            _sprite.setFillColor(sf::Color::Color(254, 253, 210));  // back to normal colour.
         }        
     }
 
