@@ -42,7 +42,11 @@ void GameManager::update(float dt)
     }
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.\n Click to continue!");
+        _masterText.setString("Level completed.\n Press Space to continue!!");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            newLevel(dt); 
+        }
         /*
         float _time_since_level_complete = _time; 
         float _breakTim = _time_since_level_complete + 5000;
