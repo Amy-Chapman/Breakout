@@ -50,11 +50,16 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
         brick = _bricks.back();
         _bricks.pop_back();
+        _gameManager->setBricksBroke(); 
         break;
     }
     if (_bricks.size() == 0)
     {
         _gameManager->levelComplete();
+    }
+    if (_bricks.size() == 3)
+    {
+        //function here for sudden death
     }
     return collisionResponse;
 }

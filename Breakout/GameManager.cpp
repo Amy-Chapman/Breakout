@@ -22,10 +22,10 @@ void GameManager::initialize()
     _messagingSystem = new MessagingSystem(_window);
     _ball = new Ball(_window, 400.0f, this); 
     _powerupManager = new PowerupManager(_window, _paddle, _ball);
-    _ui = new UI(_window, _lives, this);
+    _ui = new UI(_window, _lives, this, _levelNum);
 
     // Create bricks
-    _brickManager->createBricks(1, 1, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
 }
 
 void GameManager::update(float dt)
@@ -45,7 +45,7 @@ void GameManager::update(float dt)
         _masterText.setString("Level completed.\n Press Space to continue!!");
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
-            newLevel(dt); 
+            newLevel(); 
         }
         /*
         float _time_since_level_complete = _time; 
@@ -107,10 +107,41 @@ void GameManager::loseLife()
     // TODO screen shake.
 }
 
-void GameManager::newLevel(float dt)
+void GameManager::newLevel()
 {
     _levelComplete = false; 
+    _masterText.setString(""); 
+    _levelNum = _levelNum + 1; 
+    //_ui->updateCurrentLevel(levelNum); 
      initialize(); 
+}
+
+int GameManager::getBricksBroke()
+{
+    return _bricksBroke; 
+}
+
+void GameManager::setBricksBroke()
+{
+    _bricksBroke = _bricksBroke + 1; 
+    std::cout << _bricksBroke; 
+
+    if (_bricksBroke == 10)
+    {
+        transformation(); 
+        _bricksBroke = 0; 
+    }
+}
+
+void GameManager::transformation()
+{
+    std::cout << "sparkles and shit"; 
+    _transformed = true; 
+}
+
+int GameManager::getTransformation()
+{
+    return _transformed;
 }
 
 void GameManager::render()

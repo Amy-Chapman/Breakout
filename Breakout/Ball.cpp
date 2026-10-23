@@ -8,6 +8,7 @@ Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
     _sprite.setRadius(RADIUS);
     _sprite.setFillColor(sf::Color::Color(254, 253, 210));
     _sprite.setPosition(0, 300);
+    _starTexture.loadFromFile("art/starTexture.png");
 }
 
 Ball::~Ball()
@@ -30,6 +31,12 @@ void Ball::update(float dt)
             setFireBall(0);    // disable fireball
             _sprite.setFillColor(sf::Color::Color(254, 253, 210));  // back to normal colour.
         }        
+    }
+
+    //transformation
+    if (_gameManager->getTransformation() == true) 
+    {
+        _sprite.setTexture(&_starTexture); 
     }
 
     // Fireball effect

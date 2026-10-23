@@ -10,12 +10,13 @@ class GameManager;
 class UI
 {
 public:
-	UI(sf::RenderWindow* window, int lives, GameManager* gameManager);
+	UI(sf::RenderWindow* window, int lives, GameManager* gameManager, int level);
 	~UI();
 
 	void updatePowerupText(std::pair<POWERUPS, float>);
 	void lifeLost(int lives);
 	void render();
+	void updateCurrentLevel(int level); 
 
 private:
 	GameManager* _gameManager;
@@ -23,6 +24,9 @@ private:
 	sf::RenderWindow* _window;
 	sf::Font _font;
 	sf::Text _powerupText;
+	sf::Text _currentLevel; 
+	sf::Text _transformationMeter;
+	int levelCur = 0; 
 
 	std::vector<sf::CircleShape> _lives;
 

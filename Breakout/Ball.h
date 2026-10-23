@@ -23,6 +23,8 @@ private:
     bool _isAlive;
     bool _isFireBall;
     float _timeWithPowerupEffect;
+    sf::Sprite _transformedSprite; 
+    sf::Texture _starTexture;
 
     GameManager* _gameManager;  // Reference to the GameManager
 

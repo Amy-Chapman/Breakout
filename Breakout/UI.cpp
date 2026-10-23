@@ -3,8 +3,9 @@
 #include "UI.h"
 #include "GameManager.h"
 #include <iomanip>
+#include <iostream>
 
-UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager) 
+UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager, int level) 
 	: _window(window), _gameManager(gameManager)
 {
 	for (int i = lives; i > 0; --i)
@@ -22,6 +23,12 @@ UI::UI(sf::RenderWindow* window, int lives, GameManager* gameManager)
 	_powerupText.setFillColor(sf::Color::Cyan);
 	_font.loadFromFile("font/montS.ttf");
 	_powerupText.setFont(_font);
+
+	_currentLevel.setCharacterSize(30);
+	_currentLevel.setPosition(0, 50);
+	_currentLevel.setFillColor(sf::Color::Cyan);
+	_currentLevel.setFont(_font);
+	_currentLevel.setString("Level: " + std::to_string(level));
 }
 
 UI::~UI()
@@ -67,6 +74,14 @@ void UI::updatePowerupText(std::pair<POWERUPS, float> powerup)
 	}
 }
 
+void UI::updateCurrentLevel(int level)
+{
+	std::cout << "current level update function runs"; 
+	levelCur = level; 
+	std::cout << level; 
+	_currentLevel.setString("Level: " + std::to_string(levelCur));
+}
+
 void UI::lifeLost(int lives)
 {
 	_lives[_lives.size() - 1 - lives].setFillColor(sf::Color::Transparent);
@@ -75,6 +90,7 @@ void UI::lifeLost(int lives)
 void UI::render()
 {
 	_window->draw(_powerupText);
+	_window->draw(_currentLevel); 
 	for (sf::CircleShape life : _lives)
 	{
 		_window->draw(life);
