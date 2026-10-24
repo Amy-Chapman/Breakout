@@ -7,6 +7,7 @@
 #include "PowerupManager.h"
 #include "MessagingSystem.h"
 #include "UI.h"
+#include <SFML/Audio.hpp>
 
 
 
@@ -20,12 +21,15 @@ public:
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
     void newLevel(); 
+    void replayLevel();
     void setBricksBroke(); 
     int getBricksBroke(); 
     int getTransformation();
     void transformation(); 
     void suddenDeath(); 
     bool getSuddenDeath(); 
+    void failureMusicFunc(); 
+    void successMusicFunc(); 
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -47,10 +51,15 @@ private:
     float _timeTransformed; 
     float _suddenDeathTime; 
     bool _suddenDeath; 
+    bool _musicStarted; 
+    bool _failureMusicPlaying; 
     std::pair<POWERUPS, float> _powerupInEffect;
 
     sf::Font _font;
     sf::Text _masterText;
+    sf::Music music;
+    sf::Music successMusic;
+    sf::Music failureMusic;
 
     sf::RenderWindow* _window;
     Paddle* _paddle;

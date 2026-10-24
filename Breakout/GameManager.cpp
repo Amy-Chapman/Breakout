@@ -2,6 +2,7 @@
 #include "Ball.h"
 #include "PowerupManager.h"
 #include <iostream>
+//#include <SFML/Audio.hpp>
 
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
@@ -13,10 +14,28 @@ GameManager::GameManager(sf::RenderWindow* window)
     _masterText.setPosition(50, 400);
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
+
+    if (!music.openFromFile("music/gem-waltz.wav"))
+    {
+        std::cout << "whoops";
+    }
+
+    if (!successMusic.openFromFile("music/gem-waltz-cleared.wav"))
+    {
+        std::cout << "whoops";
+    }
+
+    if (!failureMusic.openFromFile("music/gem-waltz-gameover.wav"))
+    {
+        std::cout << "whoops";
+    }
 }
 
 void GameManager::initialize()
 {
+
+    _lives = 3; 
+
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
@@ -25,7 +44,10 @@ void GameManager::initialize()
     _ui = new UI(_window, _lives, this, _levelNum);
 
     // Create bricks
-    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(1, 3, 80.0f, 30.0f, 5.0f);
+    
+    music.setLoop(true); 
+    music.play(); 
 }
 
 void GameManager::update(float dt)
@@ -65,11 +87,20 @@ void GameManager::update(float dt)
 
     if (_lives <= 0)
     {
-        _masterText.setString("Game over.");
+        //failureMusicFunc(); 
+        _masterText.setString("Game over.\n Press Space to continue!!");
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+        {
+            replayLevel();
+        }
         return;
     }
     if (_levelComplete)
     {
+        if (!_musicStarted && successMusic.getStatus() == sf::Sound::Stopped) {
+            music.play();
+            _musicStarted = true;
+        }
         _masterText.setString("Level completed.\n Press Space to continue!!");
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
@@ -153,6 +184,16 @@ void GameManager::newLevel()
      initialize(); 
 }
 
+void GameManager::replayLevel()
+{
+    _levelComplete = false;
+    _masterText.setString("");
+    //_ui->updateCurrentLevel(levelNum); 
+    failureMusic.stop();
+    _failureMusicPlaying = false; 
+    initialize();
+}
+
 int GameManager::getBricksBroke()
 {
     return _bricksBroke; 
@@ -194,6 +235,13 @@ bool GameManager::getSuddenDeath()
     return _suddenDeath; 
 }
 
+void GameManager::failureMusicFunc()
+{
+    music.stop(); 
+    failureMusic.setLoop(true);
+    failureMusic.play();
+}
+
 void GameManager::render()
 {
     _paddle->render();
@@ -206,6 +254,9 @@ void GameManager::render()
 
 void GameManager::levelComplete()
 {
+    music.stop();
+    successMusic.setLoop(false);
+    successMusic.play();
     _levelComplete = true;
 }
 
