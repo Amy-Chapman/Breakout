@@ -24,6 +24,8 @@ public:
     int getBricksBroke(); 
     int getTransformation();
     void transformation(); 
+    void suddenDeath(); 
+    bool getSuddenDeath(); 
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -42,6 +44,9 @@ private:
     int _levelNum; 
     int _bricksBroke; 
     bool _transformed; 
+    float _timeTransformed; 
+    float _suddenDeathTime; 
+    bool _suddenDeath; 
     std::pair<POWERUPS, float> _powerupInEffect;
 
     sf::Font _font;

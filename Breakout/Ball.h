@@ -14,6 +14,7 @@ public:
     void render();
     void setVelocity(float coeff, float duration);
     void setFireBall(float duration);
+    void setTransformed(float duration); 
 
 private:
     sf::CircleShape _sprite;
@@ -25,6 +26,8 @@ private:
     float _timeWithPowerupEffect;
     sf::Sprite _transformedSprite; 
     sf::Texture _starTexture;
+    bool _isTransformed; 
+    float _timeTransformed;
 
     GameManager* _gameManager;  // Reference to the GameManager
 

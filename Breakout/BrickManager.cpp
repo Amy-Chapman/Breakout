@@ -25,6 +25,14 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
 
 void BrickManager::render()
 {
+    if (_gameManager->getSuddenDeath() == true)
+    {
+        for (auto& brick : _bricks) 
+        {
+            brick.flashing(); 
+        }
+    }
+
     for (auto& brick : _bricks) {
         brick.render(*_window);
     }
@@ -59,7 +67,7 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
     }
     if (_bricks.size() == 3)
     {
-        //function here for sudden death
+        _gameManager->suddenDeath(); 
     }
     return collisionResponse;
 }

@@ -33,11 +33,34 @@ void Ball::update(float dt)
         }        
     }
 
+    if (_timeTransformed > 0.f)
+    {
+        _timeTransformed -= dt; 
+    }
+    else
+    {
+        //_sprite.setRadius(RADIUS);
+        _sprite.setTexture(NULL);
+    }
+
     //transformation
     if (_gameManager->getTransformation() == true) 
     {
+        _sprite.setRadius(RADIUS * 2); 
         _sprite.setTexture(&_starTexture); 
+        _velocity = VELOCITY * 2; 
+        _isTransformed = true; 
+        //int flicker = rand() % 1 + 100; // Random value between 205 and 255
+        //_sprite.setFillColor(sf::Color(255, 255, flicker)); // Orange flickering color
     }
+    else if(_isTransformed == true)
+    {
+        _sprite.setRadius(RADIUS);
+        _sprite.setTexture(NULL);
+        _velocity = VELOCITY; 
+        _isTransformed == false; 
+    }
+    
 
     // Fireball effect
     if (_isFireBall)
@@ -69,6 +92,12 @@ void Ball::update(float dt)
     // lose life bounce
     if (position.y > windowDimensions.y)
     {
+        //cant die if transformed
+        if (_gameManager->getTransformation() == true)
+        {
+            _direction.y *= -1;
+            return; 
+        }
         _sprite.setPosition(0, 300);
         _direction = { 1, 1 };
         _gameManager->loseLife();
@@ -84,6 +113,10 @@ void Ball::update(float dt)
 
         // Adjust position to avoid getting stuck inside the paddle
         _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
+        if (_gameManager->getTransformation() == true)
+        {
+            _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * (RADIUS * 2)); 
+        }
     }
 
     // collision with bricks
@@ -120,4 +153,17 @@ void Ball::setFireBall(float duration)
     }
     _isFireBall = false;
     _timeWithPowerupEffect = 0.f;    
+}
+
+void Ball::setTransformed(float duration)
+{
+    /*
+    if (duration)
+    {
+        _isTransformed = true; 
+        _timeTransformed = duration; 
+        return; 
+    }
+    _isTransformed = false; 
+    _timeTransformed = 0.0f; */
 }

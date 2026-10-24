@@ -33,7 +33,35 @@ void GameManager::update(float dt)
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
-    
+    //_timeTransformed -= dt; 
+
+    //tick down timer for transformation if currently transformed
+    if (_transformed = true)
+    {
+        _timeTransformed -= dt;
+    }
+
+    //tick down timer for sudden death if currently in that state
+    if (_suddenDeath == true)
+    {
+        _suddenDeathTime -= dt;
+        _masterText.setString("SUDDEN DEATH"); 
+    }
+
+    //ending transformation
+    if ((_timeTransformed < 0) && (_transformed = true))
+    {
+        _transformed = false; 
+        _timeTransformed = 0; 
+    }
+
+    //end sudden death
+    if ((_suddenDeathTime < 0) && (_suddenDeath = true))
+    {
+        _suddenDeath = false;
+        _suddenDeathTime = 0;
+        levelComplete(); 
+    }
 
     if (_lives <= 0)
     {
@@ -57,6 +85,15 @@ void GameManager::update(float dt)
         //std::cout << _time; 
         return;
     }
+    /*
+    if (_timeTransformed > 0.f)
+    {
+        _timeTransformed = -dt; 
+    }
+    else
+    {
+        _transformed = false;
+    }*/
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
@@ -136,12 +173,25 @@ void GameManager::setBricksBroke()
 void GameManager::transformation()
 {
     std::cout << "sparkles and shit"; 
+    //_ball->setTransformed(5.0); 
     _transformed = true; 
+    _timeTransformed = 5; 
 }
 
 int GameManager::getTransformation()
 {
     return _transformed;
+}
+
+void GameManager::suddenDeath()
+{
+    _suddenDeath = true; 
+    _suddenDeathTime = 5.f; 
+}
+
+bool GameManager::getSuddenDeath()
+{
+    return _suddenDeath; 
 }
 
 void GameManager::render()
