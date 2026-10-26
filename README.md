@@ -42,7 +42,7 @@ Features Implemented:
    - This is shown with a UI meter 
 - A 'sudden death' feature- when the player is down to only three blocks, the game will end within 5 seconds whether they destroy the blocks or not, but if they hit the blocks they will get an extra five points 
 - A point counter, to motivate the player 
-- Cheerful music (“Gem Waltz” composition and arrangement by Haley Halcyon, https://opengameart.org/content/gem-waltz-free-music-loop) and a game over sound effect 
+- Cheerful music and a game over sound effect (“Gem Waltz” composition and arrangement by Haley Halcyon, https://opengameart.org/content/gem-waltz-free-music-loop) 
 - Everything is pink now!
 
 Times: 
