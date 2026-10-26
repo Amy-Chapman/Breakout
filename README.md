@@ -38,7 +38,7 @@ Sparkle Shine Breakout Magic (magical girl themed breakout)
 Features Implemented: 
 - A game loop! When the player breaks all blocks in a level, they can hit the spacebar to play a new level, and replay the current level if they die 
 - Additionally, every third level is a 'boss fight'. In these levels, the game spawns ten bricks one at a time, forcing the player to 'chase' their enemy around. They will gain an extra 100 points for this 
-- A magical girl transformation- every ten blocks broken, the player has a magical transformation. Their sprite changes to a star, they cannot die, they are significantly faster, and they can go through blocks to hit multiple at once (3 hours 15 minutes)
+- A magical girl transformation- every ten blocks broken, the player has a magical transformation. Their sprite changes to a star, they cannot die, they are significantly faster, and they can go through blocks to hit multiple at once 
    - This is shown with a UI meter 
 - A 'sudden death' feature- when the player is down to only three blocks, the game will end within 5 seconds whether they destroy the blocks or not, but if they hit the blocks they will get an extra five points 
 - A point counter, to motivate the player 
