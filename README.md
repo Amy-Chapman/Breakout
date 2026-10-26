@@ -55,8 +55,6 @@ Times:
 - 15 minutes: Fixed bug where speed up power ups didn't work due to implementation of 'magical girl transformation'. Now speeding up works for all power ups and for transformation
 - Two hours 20 minutes: Added UI meter for transformation, points counter, and boss fight every third level
 
-<Add information to this section about the time you've taken for this task along with a professional changelist.>
-
 ---
 
 ### Change log
