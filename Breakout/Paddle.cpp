@@ -37,7 +37,6 @@ void Paddle::moveRight(float dt)
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && position < _window->getSize().x - _width)
     {
-        std::cout << "right"; 
         _sprite.move(sf::Vector2f(dt * PADDLE_SPEED, 0));
     }
 }

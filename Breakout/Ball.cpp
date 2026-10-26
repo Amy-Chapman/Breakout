@@ -56,7 +56,6 @@ void Ball::update(float dt)
     }
     else if(_gameManager->getTransformation() == false && _isTransformed == true)
     {
-        std::cout << "setting speed to default"; 
         _sprite.setRadius(RADIUS);
         _sprite.setTexture(NULL);
         _velocity = VELOCITY; 
@@ -124,6 +123,7 @@ void Ball::update(float dt)
     // collision with bricks
     int collisionResponse = _gameManager->getBrickManager()->checkCollision(_sprite, _direction);
     if (_isFireBall) return; // no collisisons when in fireBall mode.
+    if (_isTransformed) return; //no collisions while transformed 
     if (collisionResponse == 1)
     {
         _direction.x *= -1; // Bounce horizontally

@@ -18,9 +18,39 @@ void BrickManager::createBricks(int rows, int cols, float brickWidth, float bric
         for (int j = 0; j < cols; ++j) {
             float x = j * (brickWidth + spacing) + leftEdge;
             float y = i * (brickHeight + spacing) + TOP_PADDING;
-            _bricks.emplace_back(x, y, brickWidth, brickHeight);
+            _bricks.emplace_back(x, y, brickWidth, brickHeight, 1);
         }
     }
+    
+  }
+
+void BrickManager::createBossBrick(int rows, int cols, float brickWidth, float brickHeight, float spacing)
+{
+    _bossBrick = true; 
+    srand(time(0));
+    float leftEdge;
+    if (cols % 2 == 0)
+        leftEdge = _window->getSize().x / 2 - ((cols / 2.0f) * brickWidth + (cols / 2.0f - 0.5f) * spacing);
+    else
+        leftEdge = _window->getSize().x / 2 - ((cols / 2.0f - 0.5f) * brickHeight + (cols / 2.0f) * spacing);
+    
+    for (int i = 0; i < 1; ++i) {
+        for (int j = 0; j < 1; ++j) {
+            float x = j * (brickWidth + spacing) + leftEdge;
+            float y = i * (brickHeight + spacing) + TOP_PADDING;
+            _bricks.emplace_back(x, y, 230, 75, 10);
+        }
+    }
+
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            float x = (rand() % 10)* (brickWidth + spacing) + leftEdge;
+            float y = (rand() % 10)* (brickHeight + spacing) + TOP_PADDING;
+            _posArray[i] = sf::Vector2f(x, y); 
+        }
+    }
+
+
 }
 
 void BrickManager::render()
@@ -56,16 +86,37 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
 
         // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
         // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
-        brick = _bricks.back();
-        _bricks.pop_back();
-        _gameManager->setBricksBroke(); 
-        break;
+        if (_bossBrick == false)
+        {
+            brick = _bricks.back();
+            _bricks.pop_back();
+            _gameManager->setBricksBroke();
+            break;
+        }
+        else
+        {
+            if (brick.getHealth() >= 1)
+            {
+                int _brickHealth = brick.getHealth() - 1; 
+                brick.setHealth(_brickHealth); 
+                _gameManager->setBricksBroke(); 
+                brick.brickPos(_posArray[_brickHealth].x, _posArray[_brickHealth].y);
+                break; 
+            }
+            else
+            {
+                brick = _bricks.back();
+                _bricks.pop_back();
+                _gameManager->setBricksBroke();
+                break;
+            }
+        }
     }
     if (_bricks.size() == 0)
     {
         _gameManager->levelComplete();
     }
-    if (_bricks.size() == 3)
+    if (_bricks.size() <= 3 && _bossBrick == false)
     {
         _gameManager->suddenDeath(); 
     }

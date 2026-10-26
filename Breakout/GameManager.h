@@ -30,6 +30,8 @@ public:
     bool getSuddenDeath(); 
     void failureMusicFunc(); 
     void successMusicFunc(); 
+    void initializeBoss();
+    bool getBossFight();
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -45,7 +47,7 @@ private:
     float _timeLastPowerupSpawned;
     int _lives;
     bool _levelComplete;
-    int _levelNum; 
+    int _levelNum =1; 
     int _bricksBroke; 
     bool _transformed; 
     float _timeTransformed; 
@@ -53,6 +55,8 @@ private:
     bool _suddenDeath; 
     bool _musicStarted; 
     bool _failureMusicPlaying; 
+    int _points; 
+    bool _bossFight; 
     std::pair<POWERUPS, float> _powerupInEffect;
 
     sf::Font _font;

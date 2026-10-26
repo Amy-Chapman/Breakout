@@ -24,8 +24,14 @@ int main()
         deltaTime = clock.restart().asSeconds();
 
         gameManager.update(deltaTime);
-
-        window.clear(sf::Color::Color(252,209,230));
+        if (gameManager.getBossFight() == true)
+        {
+            window.clear(sf::Color::Color(252, 180, 184));
+        }
+        else
+        {
+            window.clear(sf::Color::Color(252, 209, 230));
+        }
         gameManager.render();
         window.display();
     }

@@ -13,7 +13,7 @@ GameManager::GameManager(sf::RenderWindow* window)
     _masterText.setFont(_font);
     _masterText.setPosition(50, 400);
     _masterText.setCharacterSize(48);
-    _masterText.setFillColor(sf::Color::Yellow);
+    _masterText.setFillColor(sf::Color::Color(255, 94, 144));
 
     if (!music.openFromFile("music/gem-waltz.wav"))
     {
@@ -45,9 +45,33 @@ void GameManager::initialize()
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+
+    //otherwise points will display as 0 at start of levels
+    _ui->updatePoints(_points);
     
     music.setLoop(true); 
     music.play(); 
+}
+
+void GameManager::initializeBoss()
+{
+    _lives = 3;
+
+    _paddle = new Paddle(_window);
+    _brickManager = new BrickManager(_window, this);
+    _messagingSystem = new MessagingSystem(_window);
+    _ball = new Ball(_window, 400.0f, this);
+    _powerupManager = new PowerupManager(_window, _paddle, _ball);
+    _ui = new UI(_window, _lives, this, _levelNum);
+
+    // Create bricks
+    _brickManager->createBossBrick(5, 10, 80.0f, 30.0f, 5.0f);
+
+    //otherwise points will display as 0 at start of levels
+    _ui->updatePoints(_points);
+
+    music.setLoop(true);
+    music.play();
 }
 
 void GameManager::update(float dt)
@@ -87,8 +111,7 @@ void GameManager::update(float dt)
 
     if (_lives <= 0)
     {
-        //failureMusicFunc(); 
-        _masterText.setString("Game over.\n Press Space to continue!!");
+        _masterText.setString("Game over.\n You earned " + std::to_string(_points) + " points! \n Press Space to retry!!");
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             replayLevel();
@@ -101,30 +124,22 @@ void GameManager::update(float dt)
             music.play();
             _musicStarted = true;
         }
-        _masterText.setString("Level completed.\n Press Space to continue!!");
+        int _tempLvl = _levelNum + 1; 
+        if (_tempLvl % 3 == 0)
+        {
+            _masterText.setString("Level completed.\n Press space for a BOSS FIGHT");
+        }
+        else
+        {
+            _masterText.setString("Level completed.\n Press Space to continue!!");
+        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
         {
             newLevel(); 
         }
-        /*
-        float _time_since_level_complete = _time; 
-        float _breakTim = _time_since_level_complete + 5000;
-        while (_time < _breakTim)
-        {
-            _time += dt;
-        }*/
-        //std::cout << _time; 
         return;
     }
-    /*
-    if (_timeTransformed > 0.f)
-    {
-        _timeTransformed = -dt; 
-    }
-    else
-    {
-        _transformed = false;
-    }*/
+
     // pause and pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
@@ -181,7 +196,15 @@ void GameManager::newLevel()
     _masterText.setString(""); 
     _levelNum = _levelNum + 1; 
     //_ui->updateCurrentLevel(levelNum); 
-     initialize(); 
+    if (_levelNum % 3 == 0)
+    {
+        _bossFight = true; 
+        initializeBoss(); 
+    }
+    else
+    {
+        initialize();
+    }
 }
 
 void GameManager::replayLevel()
@@ -191,7 +214,15 @@ void GameManager::replayLevel()
     //_ui->updateCurrentLevel(levelNum); 
     failureMusic.stop();
     _failureMusicPlaying = false; 
-    initialize();
+    _suddenDeath = false; 
+    if (_bossFight == true)
+    {
+        initializeBoss(); 
+    }
+    else
+    {
+        initialize();
+    }
 }
 
 int GameManager::getBricksBroke()
@@ -202,7 +233,17 @@ int GameManager::getBricksBroke()
 void GameManager::setBricksBroke()
 {
     _bricksBroke = _bricksBroke + 1; 
-    std::cout << _bricksBroke; 
+    if (_suddenDeath == true)
+    {
+        _points = _points + 5; 
+    }
+    else
+    {
+        _points = _points + 1;
+    }
+
+    _ui->updateTransformMeter(_bricksBroke); 
+    _ui->updatePoints(_points); 
 
     if (_bricksBroke == 10)
     {
@@ -213,8 +254,6 @@ void GameManager::setBricksBroke()
 
 void GameManager::transformation()
 {
-    std::cout << "sparkles and shit"; 
-    //_ball->setTransformed(5.0); 
     _transformed = true; 
     _timeTransformed = 5; 
 }
@@ -242,6 +281,11 @@ void GameManager::failureMusicFunc()
     failureMusic.play();
 }
 
+bool GameManager::getBossFight()
+{
+    return _bossFight; 
+}
+
 void GameManager::render()
 {
     _paddle->render();
@@ -258,6 +302,13 @@ void GameManager::levelComplete()
     successMusic.setLoop(false);
     successMusic.play();
     _levelComplete = true;
+    _suddenDeath = false; 
+    if (_bossFight == true)
+    {
+        _bossFight = false; 
+        _points = _points + 100; 
+        _ui->updatePoints(_points); 
+    }
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }
