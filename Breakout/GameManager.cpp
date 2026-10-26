@@ -44,7 +44,7 @@ void GameManager::initialize()
     _ui = new UI(_window, _lives, this, _levelNum);
 
     // Create bricks
-    _brickManager->createBricks(1, 3, 80.0f, 30.0f, 5.0f);
+    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
     
     music.setLoop(true); 
     music.play(); 

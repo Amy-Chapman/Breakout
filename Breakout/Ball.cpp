@@ -1,5 +1,6 @@
 #include "Ball.h"
 #include "GameManager.h" // avoid cicular dependencies
+#include <iostream>
 
 Ball::Ball(sf::RenderWindow* window, float velocity, GameManager* gameManager)
     : _window(window), _velocity(velocity), _gameManager(gameManager),
@@ -53,12 +54,13 @@ void Ball::update(float dt)
         //int flicker = rand() % 1 + 100; // Random value between 205 and 255
         //_sprite.setFillColor(sf::Color(255, 255, flicker)); // Orange flickering color
     }
-    else if(_isTransformed == true)
+    else if(_gameManager->getTransformation() == false && _isTransformed == true)
     {
+        std::cout << "setting speed to default"; 
         _sprite.setRadius(RADIUS);
         _sprite.setTexture(NULL);
         _velocity = VELOCITY; 
-        _isTransformed == false; 
+        _isTransformed = false; 
     }
     
 
