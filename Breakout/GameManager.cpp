@@ -48,6 +48,8 @@ void GameManager::initialize()
 
     //otherwise points will display as 0 at start of levels
     _ui->updatePoints(_points);
+
+    _suddenDeath = false; 
     
     music.setLoop(true); 
     music.play(); 
@@ -82,7 +84,7 @@ void GameManager::update(float dt)
     //_timeTransformed -= dt; 
 
     //tick down timer for transformation if currently transformed
-    if (_transformed = true)
+    if (_transformed == true)
     {
         _timeTransformed -= dt;
     }
@@ -92,22 +94,28 @@ void GameManager::update(float dt)
     {
         _suddenDeathTime -= dt;
         _masterText.setString("SUDDEN DEATH"); 
+
+        if (_suddenDeathTime <= 0)
+        {
+            _suddenDeath = false;
+            levelComplete();
+        }
     }
 
     //ending transformation
-    if ((_timeTransformed < 0) && (_transformed = true))
+    if ((_timeTransformed < 0) && (_transformed == true))
     {
         _transformed = false; 
         _timeTransformed = 0; 
     }
 
     //end sudden death
-    if ((_suddenDeathTime < 0) && (_suddenDeath = true))
+    /*
+    if (_suddenDeathTime <= 0 && _suddenDeath == true)
     {
         _suddenDeath = false;
-        _suddenDeathTime = 0;
         levelComplete(); 
-    }
+    }*/
 
     if (_lives <= 0)
     {
@@ -269,7 +277,7 @@ int GameManager::getTransformation()
 void GameManager::suddenDeath()
 {
     _suddenDeath = true; 
-    _suddenDeathTime = 5.f; 
+    _suddenDeathTime = 5.0f; 
 }
 
 bool GameManager::getSuddenDeath()
@@ -306,6 +314,7 @@ void GameManager::levelComplete()
     successMusic.play();
     _levelComplete = true;
     _suddenDeath = false; 
+    _suddenDeathTime = 5; 
     if (_bossFight == true)
     {
         _bossFight = false; 

@@ -112,11 +112,13 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
             }
         }
     }
+
     if (_bricks.size() == 0)
     {
         _gameManager->levelComplete();
     }
-    if (_bricks.size() <= 3 && _bossBrick == false)
+
+    if (_gameManager->getSuddenDeath() == false && _bricks.size() <= 3 && _bossBrick == false)
     {
         _gameManager->suddenDeath(); 
     }
