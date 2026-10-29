@@ -29,6 +29,19 @@ GameManager::GameManager(sf::RenderWindow* window)
     {
         std::cout << "whoops";
     }
+
+    if (!_buffer.loadFromFile("music/BlockBroken.wav"))
+    {
+        std::cout << "sound load fail"; 
+    }
+
+    if (!_transformedBuffer.loadFromFile("music/TransformedSound.wav"))
+    {
+        std::cout << "transformed sound load fail";
+    }
+
+    _blockBroken = sf::Sound(_buffer); 
+    _transformedSound = sf::Sound(_transformedBuffer);
 }
 
 void GameManager::initialize()
@@ -243,7 +256,25 @@ int GameManager::getBricksBroke()
 
 void GameManager::setBricksBroke()
 {
+
+    if (_transformed == true)
+    {
+        _transformedSound.play(); 
+    }
+    if (_points % 5 == 0)
+    {
+        _currentPitch = 1.0f;
+    }
+    else
+    {
+        _currentPitch = _blockBroken.getPitch() * PITCH_VARIATION_VALUE;
+    }
+
+    _blockBroken.setPitch(_currentPitch); 
+    _blockBroken.play(); 
+
     _bricksBroke = _bricksBroke + 1; 
+
     if (_suddenDeath == true)
     {
         _points = _points + 5; 

@@ -58,12 +58,18 @@ private:
     int _points; 
     bool _bossFight; 
     std::pair<POWERUPS, float> _powerupInEffect;
+    float _currentPitch; 
 
     sf::Font _font;
     sf::Text _masterText;
     sf::Music music;
     sf::Music successMusic;
     sf::Music failureMusic;
+
+    sf::SoundBuffer _buffer; 
+    sf::Sound _blockBroken; 
+    sf::SoundBuffer _transformedBuffer;
+    sf::Sound _transformedSound;
 
     sf::RenderWindow* _window;
     Paddle* _paddle;
@@ -75,4 +81,5 @@ private:
 
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
+    float PITCH_VARIATION_VALUE = 1.059463f; 
 };
